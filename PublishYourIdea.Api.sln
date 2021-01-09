@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublishYourIdea", "PublishYourIdea\PublishYourIdea.csproj", "{D7C32827-E363-4775-ABE1-F50DCE8483BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublishYourIdea.Api", "PublishYourIdea\PublishYourIdea.Api.csproj", "{D7C32827-E363-4775-ABE1-F50DCE8483BA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Layers", "1 - Layers", "{74420D60-D465-4F2D-AA60-25C0E737B38B}"
 EndProject
@@ -11,23 +11,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.1 Distributed Services", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.2 Application", "1.2 Application", "{49049F5B-6E64-4AE3-9560-68D72B3D0817}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublishYourIdea.Api.Application", "PublishYourIdea.Api.Application\PublishYourIdea.Api.Application.csproj", "{A2BA395F-422D-44F7-B5EF-0832C0DC0CC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublishYourIdea.Api.Application", "PublishYourIdea.Api.Application\PublishYourIdea.Api.Application.csproj", "{A2BA395F-422D-44F7-B5EF-0832C0DC0CC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublishYourIdea.Api.Application.Contracts", "PublishYourIdea.Api.Contracts\PublishYourIdea.Api.Application.Contracts.csproj", "{FB054C06-E808-472C-83F8-FF4A73176F54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublishYourIdea.Api.Application.Contracts", "PublishYourIdea.Api.Contracts\PublishYourIdea.Api.Application.Contracts.csproj", "{FB054C06-E808-472C-83F8-FF4A73176F54}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.3 Business", "1.3 Business", "{5CD718FE-4A6B-4C7B-BC84-324B2F0093B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublishYourIdea.Api.Business", "PublishYourIdea.Api.Business\PublishYourIdea.Api.Business.csproj", "{C36FE9A7-641C-4FC7-BF35-588E917F59CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublishYourIdea.Api.Business", "PublishYourIdea.Api.Business\PublishYourIdea.Api.Business.csproj", "{C36FE9A7-641C-4FC7-BF35-588E917F59CA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.4 DataAccess", "1.4 DataAccess", "{4156F9BA-4141-44EA-85BF-121FEC8052D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublishYourIdea.Api.DataAccess", "PublishYourIdea.Api.DataAccess\PublishYourIdea.Api.DataAccess.csproj", "{FB1002B4-CF89-4AB4-B146-32393D437366}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.5 CrossCutting", "1.5 CrossCutting", "{A9CE12EE-3282-4D57-98AB-9F5CFCDF51BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublishYourIdea.Api.DataAccess.Contracts", "PublishYourIdea.Api.DataAccess.Contracts\PublishYourIdea.Api.DataAccess.Contracts.csproj", "{CC689B97-F190-4EBD-B548-35F11D5EB951}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublishYourIdea.Api.CrossCutting", "PublishYourIdea.Api.CrossCutting\PublishYourIdea.Api.CrossCutting.csproj", "{C2E9F87E-8ED4-477D-AC79-C3F9CA394253}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.5 Cross-Cutting", "1.5 Cross-Cutting", "{A9CE12EE-3282-4D57-98AB-9F5CFCDF51BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublishYourIdea.Api.DataAccess.Contracts", "PublishYourIdea.Api.DataAccess\PublishYourIdea.Api.DataAccess.Contracts\PublishYourIdea.Api.DataAccess.Contracts.csproj", "{66564608-1FC2-4CA4-8010-0C1F4A1EB294}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublishYourIdea.Api.CrossCutting", "PublishYourIdea.Api.CrossCutting\PublishYourIdea.Api.CrossCutting.csproj", "{C2E9F87E-8ED4-477D-AC79-C3F9CA394253}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublishYourIdea.Api.DataAccess", "PublishYourIdea.Api.DataAccess\PublishYourIdea.Api.DataAccess\PublishYourIdea.Api.DataAccess.csproj", "{711B41FB-1B56-4C5E-846E-DC9AD9C08047}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,18 +51,18 @@ Global
 		{C36FE9A7-641C-4FC7-BF35-588E917F59CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C36FE9A7-641C-4FC7-BF35-588E917F59CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C36FE9A7-641C-4FC7-BF35-588E917F59CA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FB1002B4-CF89-4AB4-B146-32393D437366}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB1002B4-CF89-4AB4-B146-32393D437366}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB1002B4-CF89-4AB4-B146-32393D437366}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB1002B4-CF89-4AB4-B146-32393D437366}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CC689B97-F190-4EBD-B548-35F11D5EB951}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CC689B97-F190-4EBD-B548-35F11D5EB951}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CC689B97-F190-4EBD-B548-35F11D5EB951}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CC689B97-F190-4EBD-B548-35F11D5EB951}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C2E9F87E-8ED4-477D-AC79-C3F9CA394253}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C2E9F87E-8ED4-477D-AC79-C3F9CA394253}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2E9F87E-8ED4-477D-AC79-C3F9CA394253}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2E9F87E-8ED4-477D-AC79-C3F9CA394253}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66564608-1FC2-4CA4-8010-0C1F4A1EB294}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66564608-1FC2-4CA4-8010-0C1F4A1EB294}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66564608-1FC2-4CA4-8010-0C1F4A1EB294}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66564608-1FC2-4CA4-8010-0C1F4A1EB294}.Release|Any CPU.Build.0 = Release|Any CPU
+		{711B41FB-1B56-4C5E-846E-DC9AD9C08047}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{711B41FB-1B56-4C5E-846E-DC9AD9C08047}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{711B41FB-1B56-4C5E-846E-DC9AD9C08047}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{711B41FB-1B56-4C5E-846E-DC9AD9C08047}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,10 +76,10 @@ Global
 		{5CD718FE-4A6B-4C7B-BC84-324B2F0093B5} = {74420D60-D465-4F2D-AA60-25C0E737B38B}
 		{C36FE9A7-641C-4FC7-BF35-588E917F59CA} = {5CD718FE-4A6B-4C7B-BC84-324B2F0093B5}
 		{4156F9BA-4141-44EA-85BF-121FEC8052D8} = {74420D60-D465-4F2D-AA60-25C0E737B38B}
-		{FB1002B4-CF89-4AB4-B146-32393D437366} = {4156F9BA-4141-44EA-85BF-121FEC8052D8}
-		{CC689B97-F190-4EBD-B548-35F11D5EB951} = {4156F9BA-4141-44EA-85BF-121FEC8052D8}
 		{A9CE12EE-3282-4D57-98AB-9F5CFCDF51BE} = {74420D60-D465-4F2D-AA60-25C0E737B38B}
 		{C2E9F87E-8ED4-477D-AC79-C3F9CA394253} = {A9CE12EE-3282-4D57-98AB-9F5CFCDF51BE}
+		{66564608-1FC2-4CA4-8010-0C1F4A1EB294} = {4156F9BA-4141-44EA-85BF-121FEC8052D8}
+		{711B41FB-1B56-4C5E-846E-DC9AD9C08047} = {4156F9BA-4141-44EA-85BF-121FEC8052D8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1CE2194A-977D-4740-A9E5-491B940DC3D6}
