@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\PublishYourIdea.Api.Application\PublishYourIdea.Api.Application\PublishYourIdea.Api.Application.csproj" />
+    <ProjectReference Include="..\..\PublishYourIdea.Api.Business\PublishYourIdea.Api.Business.csproj" />
+    <ProjectReference Include="..\..\PublishYourIdea.Api.Contracts\PublishYourIdea.Api.Application.Contracts.csproj" />
+    <ProjectReference Include="..\..\PublishYourIdea.Api.DataAccess\PublishYourIdea.Api.DataAccess.Contracts\PublishYourIdea.Api.DataAccess.Contracts.csproj" />
+    <ProjectReference Include="..\..\PublishYourIdea.Api.DataAccess\PublishYourIdea.Api.DataAccess\PublishYourIdea.Api.DataAccess.csproj" />
+  </ItemGroup>
+
+</Project>

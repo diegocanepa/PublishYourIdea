@@ -4,6 +4,7 @@ using PublishYourIdea.Api.DataAccess.Contracts.Entities;
 using PublishYourIdea.Api.DataAccess.Contracts.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -55,9 +56,9 @@ namespace PublishYourIdea.Api.DataAccess.Repositories
             throw new NotImplementedException();
         }
         
-        public Task<IEnumerable<Usuario>> GetAll()
+        public async Task<IEnumerable<Usuario>> GetAll()
         {
-            throw new NotImplementedException();
+            return _publishYourIdeaDBContext.Usuario.Select(x => x);
         }
 
         public async Task DeleteAsync(int id)
