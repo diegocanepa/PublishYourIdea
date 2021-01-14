@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using PublishYourIdea.Api.Config;
 using PublishYourIdea.Api.CrossCutting;
 using PublishYourIdea.Api.DataAccess;
 using PublishYourIdea.Api.DataAccess.Contracts;
@@ -31,7 +32,9 @@ namespace PublishYourIdea
         {
             services.AddScoped<IPublishYourIdeaDBContext, PublishYourIdeaDBContext>();
             services.AddDbContext<PublishYourIdeaDBContext>(options => options.UseMySql(Configuration.GetConnectionString("DataBaseConnection")));
+            
             IoCRegister.AddRegistration(services);
+            SwaggerConfig.AddRegistration(services);
 
             services.AddMvc();
             services.AddControllers();
@@ -44,6 +47,8 @@ namespace PublishYourIdea
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            SwaggerConfig.AddRegistration(app);
 
             app.UseHttpsRedirection();
 

@@ -1,18 +1,18 @@
 ﻿using PublishYourIdea.Api.Business.Models;
-using PublishYourIdea.Api.DataAccess.Contracts.Entities;
+using PublishYourIdea.Api.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace PublishYourIdea.Api.DataAccess.Mappers
+namespace PublishYourIdea.Api.Mappers
 {
-    public static class UsuarioMapper
+    public static class UsuarioPresentationMapper
     {
-        public static Usuario Map(UsuarioModelBusiness dto)
+        public static UsuarioModelBusiness Map(UsuarioModel dto)
         {
-            return new Usuario()
+            return new UsuarioModelBusiness()
             {
-                IdUsuario = dto.IdUsuario,
                 Nombre = dto.Nombre,
                 Apellido = dto.Apellido,
                 Email = dto.Email,
@@ -22,11 +22,10 @@ namespace PublishYourIdea.Api.DataAccess.Mappers
             };
         }
 
-        public static UsuarioModelBusiness Map(Usuario entity)
+        public static UsuarioModel Map(UsuarioModelBusiness entity)
         {
-            return new UsuarioModelBusiness()
+            return new UsuarioModel()
             {
-                IdUsuario = entity.IdUsuario,
                 Nombre = entity.Nombre,
                 Apellido = entity.Apellido,
                 Email = entity.Email,
@@ -35,7 +34,5 @@ namespace PublishYourIdea.Api.DataAccess.Mappers
                 Token = entity.Token
             };
         }
-
-
     }
 }

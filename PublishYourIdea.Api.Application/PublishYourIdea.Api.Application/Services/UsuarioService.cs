@@ -26,7 +26,7 @@ namespace PublishYourIdea.Api.Application.Services
             return entidad.Nombre;
         }
         
-        public async Task<UsuarioModel> AddUsuario(UsuarioModel usuario)
+        public async Task<UsuarioModelBusiness> AddUsuario(UsuarioModelBusiness usuario)
         {
             var addedEntity = await _usuarioRepository.Add(UsuarioMapper.Map(usuario));
             return UsuarioMapper.Map(addedEntity);

@@ -9,6 +9,6 @@ namespace PublishYourIdea.Api.Application.Contracts.Services
     public interface IUsuarioService
     {
         Task<string> GetUsuario(int idUsuario);
-        Task<UsuarioModel> AddUsuario(UsuarioModel usuario);
+        Task<UsuarioModelBusiness> AddUsuario(UsuarioModelBusiness usuario);
     }
 }
