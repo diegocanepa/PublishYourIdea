@@ -15,6 +15,7 @@ namespace PublishYourIdea.Api.DataAccess.Repositories
         //CRUD --> CREATE READ UPDATE DELETE
 
         private readonly IPublishYourIdeaDBContext _publishYourIdeaDBContext;
+       
 
         public UsuarioRepository(IPublishYourIdeaDBContext publishYourIdeaDBContext)
         {

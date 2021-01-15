@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Polly" Version="7.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\PublishYourIdea.Api.Business\PublishYourIdea.Api.Business.csproj" />
     <ProjectReference Include="..\..\PublishYourIdea.Api.Contracts\PublishYourIdea.Api.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\PublishYourIdea.Api.DataAccess\PublishYourIdea.Api.DataAccess.Contracts\PublishYourIdea.Api.DataAccess.Contracts.csproj" />

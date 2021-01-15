@@ -20,9 +20,14 @@ namespace PublishYourIdea.Api.Controllers
         {
             _usuarioService = usuarioService;
         }
+
         
-        //[HttpGet("user/data/{id}/rol/{rol}")]
-        [HttpGet("{id}")]
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}")] //[HttpGet("user/data/{id}/rol/{rol}")]
         public async Task<IActionResult> Get(int id)
         {
             var name = await _usuarioService.GetUsuario(id);

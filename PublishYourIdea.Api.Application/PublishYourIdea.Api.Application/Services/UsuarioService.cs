@@ -1,4 +1,6 @@
-﻿using PublishYourIdea.Api.Application.Contracts.Services;
+﻿using Polly;
+using PublishYourIdea.Api.Application.Configuration;
+using PublishYourIdea.Api.Application.Contracts.Services;
 using PublishYourIdea.Api.Business.Models;
 using PublishYourIdea.Api.DataAccess.Contracts.Entities;
 using PublishYourIdea.Api.DataAccess.Contracts.Repositories;
@@ -14,9 +16,11 @@ namespace PublishYourIdea.Api.Application.Services
     {
 
         private readonly IUsuarioRepository _usuarioRepository;
-        public UsuarioService(IUsuarioRepository usuarioRepository)
+        private readonly IAppConfig _appConfig;
+        public UsuarioService(IUsuarioRepository usuarioRepository, IAppConfig appConfig)
         {
             _usuarioRepository = usuarioRepository;
+            _appConfig = appConfig;
         }
 
         public async Task<string> GetUsuario(int idUsuario)
@@ -28,15 +32,15 @@ namespace PublishYourIdea.Api.Application.Services
         
         public async Task<UsuarioModelBusiness> AddUsuario(UsuarioModelBusiness usuario)
         {
-            var addedEntity = await _usuarioRepository.Add(UsuarioMapper.Map(usuario));
-            return UsuarioMapper.Map(addedEntity);
-        }
+            var maxTrys = _appConfig.MaxTrys;
+            var timeToWait = TimeSpan.FromSeconds(_appConfig.TimeDelay);
 
-        /*
-        public async Task<UsuarioModel> AddUsuario(UsuarioModel usuario)
-        {
-           var addedEntity = await _usuarioRepository.Add(UsuarioMapper.Map(usuario));
-           return UsuarioMapper.Map(addedEntity);
-        }*/
+            var retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(maxTrys, i=>timeToWait); //VER TODAS LAS CONFIGURACIONES DISPONIBLES
+
+            return await retryPolicy.ExecuteAsync( async () => {
+                var addedEntity = await _usuarioRepository.Add(UsuarioMapper.Map(usuario));
+                return UsuarioMapper.Map(addedEntity);
+            }); 
+        }
     }
 }
