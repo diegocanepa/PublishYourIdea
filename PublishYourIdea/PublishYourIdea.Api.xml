@@ -4,5 +4,12 @@
         <name>PublishYourIdea.Api</name>
     </assembly>
     <members>
+        <member name="M:PublishYourIdea.Api.Controllers.UsuarioController.Get(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

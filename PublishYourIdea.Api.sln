@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublishYourIdea.Api.DataAcc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublishYourIdea.Api.CrossCutting", "PublishYourIdea.Api.CrossCutting\PublishYourIdea.Api.CrossCutting\PublishYourIdea.Api.CrossCutting.csproj", "{E071F6FC-900C-4F97-AEB2-763E84D47851}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublishYourIdea.Api.Application", "PublishYourIdea.Api.Application\PublishYourIdea.Api.Application\PublishYourIdea.Api.Application.csproj", "{CFFBFFAD-3428-4B6A-84EC-04F8542E8556}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublishYourIdea.Api.Application", "PublishYourIdea.Api.Application\PublishYourIdea.Api.Application\PublishYourIdea.Api.Application.csproj", "{CFFBFFAD-3428-4B6A-84EC-04F8542E8556}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

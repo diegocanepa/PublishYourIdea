@@ -7,12 +7,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NLog;
 using PublishYourIdea.Api.Config;
 using PublishYourIdea.Api.CrossCutting;
 using PublishYourIdea.Api.DataAccess;
 using PublishYourIdea.Api.DataAccess.Contracts;
+using PublishYourIdea.Api.Extensions;
+using PublishYourIdea.Api.Middleware;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,6 +26,7 @@ namespace PublishYourIdea
     {
         public Startup(IConfiguration configuration)
         {
+            LogManager.LoadConfiguration(String.Concat(Directory.GetCurrentDirectory(), "/Config/nlog.config"));
             Configuration = configuration;
         }
 
@@ -49,6 +54,8 @@ namespace PublishYourIdea
             }
 
             SwaggerConfig.AddRegistration(app);
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseHttpsRedirection();
 

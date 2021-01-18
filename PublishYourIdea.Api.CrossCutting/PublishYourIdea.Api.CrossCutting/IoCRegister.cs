@@ -16,6 +16,7 @@ namespace PublishYourIdea.Api.CrossCutting
         {
             AddRegisterServices(services);
             AddRegisterRepository(services);
+            AddRegisterOthers(services);
 
             return services;
         }
@@ -40,6 +41,8 @@ namespace PublishYourIdea.Api.CrossCutting
         private static IServiceCollection AddRegisterOthers(IServiceCollection services)
         {
             services.AddTransient<IAppConfig, AppConfig>();
+            services.AddTransient<ILoggerManagerService, LoggerManagerService>();
+
 
             return services;
         }
