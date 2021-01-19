@@ -31,8 +31,6 @@ namespace PublishYourIdea.Controllers
 
             var rng = new Random();
 
-            throw new Exception("Exception while fetching all the students from the storage.");
-
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),

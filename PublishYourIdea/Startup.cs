@@ -12,7 +12,6 @@ using PublishYourIdea.Api.Config;
 using PublishYourIdea.Api.CrossCutting;
 using PublishYourIdea.Api.DataAccess;
 using PublishYourIdea.Api.DataAccess.Contracts;
-using PublishYourIdea.Api.Extensions;
 using PublishYourIdea.Api.Middleware;
 using System;
 using System.Collections.Generic;
@@ -40,6 +39,7 @@ namespace PublishYourIdea
             
             IoCRegister.AddRegistration(services);
             SwaggerConfig.AddRegistration(services);
+            JwtSettingsConfig.AddRegistration(services, Configuration);
 
             services.AddMvc();
             services.AddControllers();
@@ -60,6 +60,8 @@ namespace PublishYourIdea
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
