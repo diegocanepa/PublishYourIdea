@@ -12,7 +12,6 @@ using PublishYourIdea.Api.Config;
 using PublishYourIdea.Api.CrossCutting;
 using PublishYourIdea.Api.DataAccess;
 using PublishYourIdea.Api.DataAccess.Contracts;
-using PublishYourIdea.Api.Extensions;
 using PublishYourIdea.Api.Middleware;
 using System;
 using System.Collections.Generic;
