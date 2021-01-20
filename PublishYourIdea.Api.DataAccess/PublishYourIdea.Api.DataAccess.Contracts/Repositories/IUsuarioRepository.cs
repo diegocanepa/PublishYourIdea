@@ -9,5 +9,7 @@ namespace PublishYourIdea.Api.DataAccess.Contracts.Repositories
     public interface IUsuarioRepository : IRepository<Usuario>
     {
         Task<Usuario> Update(Usuario entity);
+
+        Task<Usuario> FindByEmailAsync(string email);
     }
 }

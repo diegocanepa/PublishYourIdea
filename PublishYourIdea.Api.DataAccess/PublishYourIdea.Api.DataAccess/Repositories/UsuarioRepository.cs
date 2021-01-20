@@ -68,5 +68,10 @@ namespace PublishYourIdea.Api.DataAccess.Repositories
             _publishYourIdeaDBContext.Usuario.Remove(entity);
             await _publishYourIdeaDBContext.SaveChangesAsync();
         }
+
+        public async Task<Usuario> FindByEmailAsync(string email)
+        {
+            return await _publishYourIdeaDBContext.Usuario.FirstOrDefaultAsync(x => x.Email == email);
+        }
     }
 }
