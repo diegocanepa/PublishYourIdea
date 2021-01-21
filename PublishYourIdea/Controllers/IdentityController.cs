@@ -64,7 +64,8 @@ namespace PublishYourIdea.Api.Controllers
 
             return Ok(new AuthSuccessResponse 
             {
-                Token = authResponse.Token
+                Token = authResponse.Token,
+                RefeshToken = authResponse.RefreshToken
             });
         }
 
@@ -85,7 +86,30 @@ namespace PublishYourIdea.Api.Controllers
 
             return Ok(new AuthSuccessResponse
             {
-                Token = authResponse.Token
+                Token = authResponse.Token,
+                RefeshToken = authResponse.RefreshToken
+            });
+        }
+
+        [AllowAnonymous]
+        [HttpPost("refresh")]
+        public async Task<IActionResult> refreshToken([FromBody] RefreshTokenRequest request)
+        {
+
+            var authResponse = await _IIdentityService.RefreshTokenAsync(request.Token, request.RefeshToken);
+
+            if (!authResponse.Success)
+            {
+                return BadRequest(new AuthFailedResponse
+                {
+                    Errors = authResponse.Errors
+                });
+            }
+
+            return Ok(new AuthSuccessResponse
+            {
+                Token = authResponse.Token,
+                RefeshToken = authResponse.RefreshToken
             });
         }
     }

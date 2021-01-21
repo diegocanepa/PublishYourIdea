@@ -18,7 +18,19 @@ namespace PublishYourIdea.Api.Config
         {
             var jwtSettings = new JwtSettings();
             configuration.Bind(nameof(jwtSettings), jwtSettings);
-            
+
+            var TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                RequireExpirationTime = false,
+                ValidateLifetime = false
+            };
+
+            services.AddSingleton(TokenValidationParameters);
+
 
             services.AddAuthentication(x =>
             {
@@ -29,18 +41,9 @@ namespace PublishYourIdea.Api.Config
             .AddJwtBearer(x =>
             {
                 x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    RequireExpirationTime = false,
-                    ValidateLifetime = false
-                };
+                x.TokenValidationParameters = TokenValidationParameters;
             });
 
-            services.AddTransient<IIdentityService, IdentityService>();
 
             return services;
         }

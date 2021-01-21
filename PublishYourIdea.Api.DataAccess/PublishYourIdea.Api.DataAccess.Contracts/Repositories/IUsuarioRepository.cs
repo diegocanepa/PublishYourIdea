@@ -11,5 +11,11 @@ namespace PublishYourIdea.Api.DataAccess.Contracts.Repositories
         Task<Usuario> Update(Usuario entity);
 
         Task<Usuario> FindByEmailAsync(string email);
+        bool CheckPasswordAsync(string passwordHased, string password);
+        Task<RefreshToken> GetRefreshTokenAsync(string refreshToken);
+
+        Task<RefreshToken> UpdateRefreshToken(RefreshToken refreshToken);
+
+        Task<RefreshToken> AddRefreshTokenAsync(RefreshToken refreshToken);
     }
 }

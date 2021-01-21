@@ -69,9 +69,37 @@ namespace PublishYourIdea.Api.DataAccess.Repositories
             await _publishYourIdeaDBContext.SaveChangesAsync();
         }
 
+        public async Task<RefreshToken> GetRefreshTokenAsync(string refreshToken)
+        {
+            return await _publishYourIdeaDBContext.RefreshToken.AsNoTracking().SingleOrDefaultAsync(x => x.Token == refreshToken);
+        }
+
+        public async Task<RefreshToken> UpdateRefreshToken(RefreshToken refreshToken)
+        {
+            var updateEntity = _publishYourIdeaDBContext.RefreshToken.Update(refreshToken);
+            await _publishYourIdeaDBContext.SaveChangesAsync();
+            return updateEntity.Entity;
+        }
+
+        public async Task<RefreshToken> AddRefreshTokenAsync(RefreshToken refreshToken)
+        {
+            await _publishYourIdeaDBContext.RefreshToken.AddAsync(refreshToken);
+            await _publishYourIdeaDBContext.SaveChangesAsync();
+            return refreshToken;
+        }
+
         public async Task<Usuario> FindByEmailAsync(string email)
         {
             return await _publishYourIdeaDBContext.Usuario.FirstOrDefaultAsync(x => x.Email == email);
         }
+
+        public bool CheckPasswordAsync(string passwordHased, string password)
+        {
+            if (passwordHased == password)
+                return true;
+            return false;
+        }
+
+        
     }
 }

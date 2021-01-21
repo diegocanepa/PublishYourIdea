@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace PublishYourIdea.Api.Application.Contracts.Services
 {
-    public interface IIdentityService
+    public interface IIdentityService 
     {
         Task<AuthenticationResultModelBusiness> RegisterAsync(string email, string password);
         Task<AuthenticationResultModelBusiness> LoginAsync(string email, string password);
+        Task<AuthenticationResultModelBusiness> RefreshTokenAsync(string token, string refeshToken);
     }
 }

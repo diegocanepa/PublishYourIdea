@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using PublishYourIdea.Api.DataAccess.Contracts;
 using PublishYourIdea.Api.DataAccess.Contracts.Entities;
 
-namespace PublishYourIdea.Api.DataAccess.Contracts
+namespace PublishYourIdea.Api.DataAccess
 {
     public partial class PublishYourIdeaDBContext : DbContext, IPublishYourIdeaDBContext
     {
@@ -22,6 +23,7 @@ namespace PublishYourIdea.Api.DataAccess.Contracts
         public virtual DbSet<MultimediaComentario> MultimediaComentario { get; set; }
         public virtual DbSet<MultimediaIdea> MultimediaIdea { get; set; }
         public virtual DbSet<Puntuacion> Puntuacion { get; set; }
+        public virtual DbSet<RefreshToken> RefreshToken { get; set; }
         public virtual DbSet<Seguidores> Seguidores { get; set; }
         public virtual DbSet<Usuario> Usuario { get; set; }
 
@@ -29,7 +31,7 @@ namespace PublishYourIdea.Api.DataAccess.Contracts
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //#warning  To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseMySql("server=remotemysql.com;database=XBboynej9U;user=XBboynej9U;password=ZImQgvMqBZ;treattinyasboolean=true", x => x.ServerVersion("8.0.13-mysql"));
             }
         }
@@ -334,6 +336,56 @@ namespace PublishYourIdea.Api.DataAccess.Contracts
                     .HasConstraintName("FK1_USUARIO");
             });
 
+            modelBuilder.Entity<RefreshToken>(entity =>
+            {
+                entity.HasKey(e => e.Token)
+                    .HasName("PRIMARY");
+
+                entity.HasIndex(e => e.UserId)
+                    .HasName("FK_USUARIO_idx");
+
+                entity.Property(e => e.Token)
+                    .HasColumnName("token")
+                    .HasColumnType("varchar(500)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_unicode_ci");
+
+                entity.Property(e => e.CreationDate)
+                    .HasColumnName("creationDate")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.ExpiryDate)
+                    .HasColumnName("expiryDate")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.Invalidated)
+                    .HasColumnName("invalidated")
+                    .HasColumnType("char(1)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_unicode_ci");
+
+                entity.Property(e => e.JwtId)
+                    .HasColumnName("jwtId")
+                    .HasColumnType("varchar(200)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_unicode_ci");
+
+                entity.Property(e => e.Used)
+                    .HasColumnName("used")
+                    .HasColumnType("char(1)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_unicode_ci");
+
+                entity.Property(e => e.UserId)
+                    .HasColumnName("userId")
+                    .HasColumnType("int(11)");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.RefreshToken)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_RefreshToken_Usuario");
+            });
+
             modelBuilder.Entity<Seguidores>(entity =>
             {
                 entity.HasKey(e => e.IdSeguidores)
@@ -404,12 +456,14 @@ namespace PublishYourIdea.Api.DataAccess.Contracts
 
                 entity.Property(e => e.Confirmacion)
                     .HasColumnName("confirmacion")
-                    .HasColumnType("tinyint(4)");
+                    .HasColumnType("char(1)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_unicode_ci");
 
                 entity.Property(e => e.Contraseña)
                     .IsRequired()
                     .HasColumnName("contraseña")
-                    .HasColumnType("varchar(200)")
+                    .HasColumnType("varchar(500)")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_unicode_ci");
 

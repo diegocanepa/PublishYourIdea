@@ -10,8 +10,6 @@ namespace PublishYourIdea.Api.Models.Request
     {
         [EmailAddress]
         public string Email { get; set; }
-
-        [Password]
         public string Password { get; set; }
     }
 }

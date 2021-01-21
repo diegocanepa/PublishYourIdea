@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PublishYourIdea.Api.Models.Responses
+namespace PublishYourIdea.Api.Models.Request
 {
-    public class AuthSuccessResponse
+    public class RefreshTokenRequest
     {
         public string Token { get; set; }
         public string RefeshToken { get; set; }

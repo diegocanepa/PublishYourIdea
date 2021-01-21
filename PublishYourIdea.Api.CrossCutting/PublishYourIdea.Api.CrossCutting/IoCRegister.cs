@@ -1,7 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using PublishYourIdea.Api.Application.Configuration;
 using PublishYourIdea.Api.Application.Contracts.Services;
 using PublishYourIdea.Api.Application.Services;
+using PublishYourIdea.Api.DataAccess;
+using PublishYourIdea.Api.DataAccess.Contracts;
 using PublishYourIdea.Api.DataAccess.Contracts.Repositories;
 using PublishYourIdea.Api.DataAccess.Repositories;
 using System;
@@ -36,15 +39,13 @@ namespace PublishYourIdea.Api.CrossCutting
             //Debemos poner uno por cada repositorio que tengamos
             services.AddTransient<IUsuarioRepository, UsuarioRepository>(); //IUsuarioRepository IMPLEMENTA UsuarioRepository 
 
-
             return services;
         }
 
         private static IServiceCollection AddRegisterOthers(IServiceCollection services)
         {
             services.AddTransient<IAppConfig, AppConfig>();
-            
-
+            services.AddTransient<IPublishYourIdeaDBContext, PublishYourIdeaDBContext>();
 
             return services;
         }
