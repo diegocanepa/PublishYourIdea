@@ -4,14 +4,15 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using PublishYourIdea.Api.Application.Contracts.Services;
 
-namespace PublishYourIdea.Api.CrossCutting.Security
+namespace PublishYourIdea.Api.Application.Services
 {
     /// <summary>
     /// Implements the standard Identity password hashing.
     /// </summary>
     /// <typeparam name="TUser">The type used to represent a user.</typeparam>
-    public class PasswordHasher<TUser> : IPasswordHasher<TUser> where TUser : class
+    public class PasswordHasherService: IPasswordHasherService
     {
         /* =======================
          * HASHED PASSWORD FORMATS
@@ -32,7 +33,7 @@ namespace PublishYourIdea.Api.CrossCutting.Security
         private readonly RandomNumberGenerator _rng;
 
 
-        public PasswordHasher()
+        public PasswordHasherService()
         {
             _iterCount = 1000;
             _rng = RandomNumberGenerator.Create();
@@ -44,7 +45,7 @@ namespace PublishYourIdea.Api.CrossCutting.Security
         /// <param name="user">The user whose password is to be hashed.</param>
         /// <param name="password">The password to hash.</param>
         /// <returns>A hashed representation of the supplied <paramref name="password"/> for the specified <paramref name="user"/>.</returns>
-        public virtual string HashPassword(TUser user, string password)
+        public virtual string HashPassword(string password)
         {
             
             return Convert.ToBase64String(HashPasswordV3(password, _rng));
@@ -95,7 +96,7 @@ namespace PublishYourIdea.Api.CrossCutting.Security
         /// <param name="providedPassword">The password supplied for comparison.</param>
         /// <returns>A <see cref="PasswordVerificationResult"/> indicating the result of a password hash comparison.</returns>
         /// <remarks>Implementations of this method should be time consistent.</remarks>
-        public virtual PasswordVerificationResult VerifyHashedPassword(TUser user, string hashedPassword, string providedPassword)
+        public virtual PasswordVerificationResult VerifyHashedPassword(string hashedPassword, string providedPassword)
         {
             if (hashedPassword == null)
             {
@@ -177,6 +178,53 @@ namespace PublishYourIdea.Api.CrossCutting.Security
             buffer[offset + 1] = (byte)(value >> 16);
             buffer[offset + 2] = (byte)(value >> 8);
             buffer[offset + 3] = (byte)(value >> 0);
+        }
+
+
+
+
+        private static byte[] HashPasswordV2(string password, RandomNumberGenerator rng)
+        {
+            const KeyDerivationPrf Pbkdf2Prf = KeyDerivationPrf.HMACSHA1; // default for Rfc2898DeriveBytes
+            const int Pbkdf2IterCount = 1000; // default for Rfc2898DeriveBytes
+            const int Pbkdf2SubkeyLength = 256 / 8; // 256 bits
+            const int SaltSize = 128 / 8; // 128 bits
+
+            // Produce a version 2 (see comment above) text hash.
+            byte[] salt = new byte[SaltSize];
+            rng.GetBytes(salt);
+            byte[] subkey = KeyDerivation.Pbkdf2(password, salt, Pbkdf2Prf, Pbkdf2IterCount, Pbkdf2SubkeyLength);
+
+            var outputBytes = new byte[1 + SaltSize + Pbkdf2SubkeyLength];
+            outputBytes[0] = 0x00; // format marker
+            Buffer.BlockCopy(salt, 0, outputBytes, 1, SaltSize);
+            Buffer.BlockCopy(subkey, 0, outputBytes, 1 + SaltSize, Pbkdf2SubkeyLength);
+            return outputBytes;
+        }
+
+
+        private static bool VerifyHashedPasswordV2(byte[] hashedPassword, string password)
+        {
+            const KeyDerivationPrf Pbkdf2Prf = KeyDerivationPrf.HMACSHA1; // default for Rfc2898DeriveBytes
+            const int Pbkdf2IterCount = 1000; // default for Rfc2898DeriveBytes
+            const int Pbkdf2SubkeyLength = 256 / 8; // 256 bits
+            const int SaltSize = 128 / 8; // 128 bits
+
+            // We know ahead of time the exact length of a valid hashed password payload.
+            if (hashedPassword.Length != 1 + SaltSize + Pbkdf2SubkeyLength)
+            {
+                return false; // bad size
+            }
+
+            byte[] salt = new byte[SaltSize];
+            Buffer.BlockCopy(hashedPassword, 1, salt, 0, salt.Length);
+
+            byte[] expectedSubkey = new byte[Pbkdf2SubkeyLength];
+            Buffer.BlockCopy(hashedPassword, 1 + salt.Length, expectedSubkey, 0, expectedSubkey.Length);
+
+            // Hash the incoming password and verify it
+            byte[] actualSubkey = KeyDerivation.Pbkdf2(password, salt, Pbkdf2Prf, Pbkdf2IterCount, Pbkdf2SubkeyLength);
+            return CryptographicOperations.FixedTimeEquals(actualSubkey, expectedSubkey);
         }
     }
 }

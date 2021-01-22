@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using PublishYourIdea.Api.Application.Contracts.Services;
@@ -21,6 +22,7 @@ namespace PublishYourIdea.Api.Application.Services
 
         private readonly IUsuarioRepository _IUsuarioRepository;
         private readonly IConfiguration _Iconfiguration;
+        private readonly IPasswordHasherService _passwordHasherService;
 
         public string Secret => _Iconfiguration.GetSection("JwtSettings:Secret").Value;
         public TimeSpan TokenLifetime => TimeSpan.Parse(_Iconfiguration.GetSection("JwtSettings:TokenLifetime").Value);
@@ -28,10 +30,12 @@ namespace PublishYourIdea.Api.Application.Services
         private TokenValidationParameters _tokenValidationParameters;
 
         public IdentityService(IUsuarioRepository IUsuarioRepository,
-                                IConfiguration Iconfiguration)
+                                IConfiguration Iconfiguration,
+                                IPasswordHasherService passwordHasherService)
         {
             _IUsuarioRepository = IUsuarioRepository;
             _Iconfiguration = Iconfiguration;
+            _passwordHasherService = passwordHasherService;
             _tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
@@ -80,7 +84,7 @@ namespace PublishYourIdea.Api.Application.Services
             var newUser = new Usuario
             {
                 Email = email,
-                Contraseña = password,
+                Contraseña = _passwordHasherService.HashPassword(password),
                 Nombre = "diego",
                 Apellido = "canepa",
                 FechaCreacion = System.DateTime.Today,
@@ -112,9 +116,9 @@ namespace PublishYourIdea.Api.Application.Services
                 };
             }
 
-            var userHasValidPassword = _IUsuarioRepository.CheckPasswordAsync(user.Contraseña, password);
+            PasswordVerificationResult userHasValidPassword = _passwordHasherService.VerifyHashedPassword(user.Contraseña, password);
 
-            if (!userHasValidPassword)
+            if (userHasValidPassword == PasswordVerificationResult.Failed)
             {
                 return new AuthenticationResultModelBusiness
                 {

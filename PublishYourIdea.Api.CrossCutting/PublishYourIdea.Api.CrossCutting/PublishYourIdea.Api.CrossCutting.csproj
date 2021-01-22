@@ -16,4 +16,8 @@
     <ProjectReference Include="..\..\PublishYourIdea.Api.DataAccess\PublishYourIdea.Api.DataAccess\PublishYourIdea.Api.DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Security\" />
+  </ItemGroup>
+
 </Project>

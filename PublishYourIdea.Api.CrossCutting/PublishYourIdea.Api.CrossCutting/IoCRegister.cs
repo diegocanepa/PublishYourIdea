@@ -29,7 +29,7 @@ namespace PublishYourIdea.Api.CrossCutting
             services.AddTransient<IUsuarioService, UsuarioService>();
             services.AddTransient<ILoggerManagerService, LoggerManagerService>();
             services.AddTransient<IIdentityService, IdentityService>();
-
+            services.AddTransient<IPasswordHasherService,PasswordHasherService>();
 
             return services;
         }
