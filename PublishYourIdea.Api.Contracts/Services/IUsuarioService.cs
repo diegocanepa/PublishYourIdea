@@ -1,4 +1,5 @@
 ﻿using PublishYourIdea.Api.Business.Models;
+using PublishYourIdea.Api.DataAccess.Contracts.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +9,9 @@ namespace PublishYourIdea.Api.Application.Contracts.Services
 {
     public interface IUsuarioService
     {
-        Task<string> GetUsuario(int idUsuario);
+        Task<Usuario> GetUsuario(int idUsuario);
         Task<UsuarioModelBusiness> AddUsuario(UsuarioModelBusiness usuario);
+
+        Task<UsuarioModelBusiness> GetUsuarioByEmail(string email);
     }
 }

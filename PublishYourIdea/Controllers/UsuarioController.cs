@@ -31,7 +31,7 @@ namespace PublishYourIdea.Api.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var name = await _usuarioService.GetUsuario(id);
-            return Ok(name); //devuelve un 200
+            return Ok(name); 
         }
 
         [HttpPost]

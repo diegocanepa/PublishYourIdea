@@ -1,10 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using PublishYourIdea.Api.DataAccess.Contracts;
 using PublishYourIdea.Api.DataAccess.Contracts.Entities;
 
-namespace PublishYourIdea.Api.DataAccess
+namespace PublishYourIdea.Api.DataAccess.Contracts
 {
     public partial class PublishYourIdeaDBContext : DbContext, IPublishYourIdeaDBContext
     {
@@ -18,6 +17,8 @@ namespace PublishYourIdea.Api.DataAccess
         }
 
         public virtual DbSet<Comentario> Comentario { get; set; }
+        public virtual DbSet<EmailConfirmationToken> EmailConfirmationToken { get; set; }
+        public virtual DbSet<EmailNotificacion> EmailNotificacion { get; set; }
         public virtual DbSet<EstadoIdea> EstadoIdea { get; set; }
         public virtual DbSet<Idea> Idea { get; set; }
         public virtual DbSet<MultimediaComentario> MultimediaComentario { get; set; }
@@ -95,6 +96,102 @@ namespace PublishYourIdea.Api.DataAccess
                     .HasForeignKey(d => d.IdUsuario)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK2_USUARIO");
+            });
+
+            modelBuilder.Entity<EmailConfirmationToken>(entity =>
+            {
+                entity.HasKey(e => e.Token)
+                    .HasName("PRIMARY");
+
+                entity.HasIndex(e => e.UserId)
+                    .HasName("FK_EMAILTOKEN_USUARIO_idx");
+
+                entity.Property(e => e.Token)
+                    .HasColumnName("token")
+                    .HasColumnType("varchar(500)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_unicode_ci");
+
+                entity.Property(e => e.CreationDate)
+                    .HasColumnName("creationDate")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.ExpiryDate)
+                    .HasColumnName("expiryDate")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Invalidated)
+                    .HasColumnName("invalidated")
+                    .HasColumnType("char(1)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_unicode_ci");
+
+                entity.Property(e => e.JwtId)
+                    .HasColumnName("jwtId")
+                    .HasColumnType("varchar(200)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_unicode_ci");
+
+                entity.Property(e => e.Used)
+                    .HasColumnName("used")
+                    .HasColumnType("char(1)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_unicode_ci");
+
+                entity.Property(e => e.UserId)
+                    .HasColumnName("userId")
+                    .HasColumnType("int(11)");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.EmailConfirmationToken)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_EMAILTOKEN_USUARIO");
+            });
+
+            modelBuilder.Entity<EmailNotificacion>(entity =>
+            {
+                entity.HasKey(e => e.IdEmailNotificacion)
+                    .HasName("PRIMARY");
+
+                entity.HasIndex(e => e.UserId)
+                    .HasName("FK_EMAILAUDIT_USER_idx");
+
+                entity.Property(e => e.IdEmailNotificacion)
+                    .HasColumnName("idEmailNotificacion")
+                    .HasColumnType("varchar(100)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_unicode_ci");
+
+                entity.Property(e => e.Action)
+                    .IsRequired()
+                    .HasColumnName("action")
+                    .HasColumnType("varchar(100)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_unicode_ci");
+
+                entity.Property(e => e.Contenido)
+                    .HasColumnName("contenido")
+                    .HasColumnType("blob");
+
+                entity.Property(e => e.Date)
+                    .HasColumnName("date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("status")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_unicode_ci");
+
+                entity.Property(e => e.UserId)
+                    .HasColumnName("userId")
+                    .HasColumnType("int(11)");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.EmailNotificacion)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_EMAILAUDIT_USER");
             });
 
             modelBuilder.Entity<EstadoIdea>(entity =>
@@ -379,11 +476,6 @@ namespace PublishYourIdea.Api.DataAccess
                 entity.Property(e => e.UserId)
                     .HasColumnName("userId")
                     .HasColumnType("int(11)");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.RefreshToken)
-                    .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK_RefreshToken_Usuario");
             });
 
             modelBuilder.Entity<Seguidores>(entity =>

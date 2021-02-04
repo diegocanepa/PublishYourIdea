@@ -23,13 +23,20 @@ namespace PublishYourIdea.Api.Application.Services
             _appConfig = appConfig;
         }
 
-        public async Task<string> GetUsuario(int idUsuario)
+        public async Task<Usuario> GetUsuario(int idUsuario)
         {
             var entidad = await _usuarioRepository.Get(idUsuario);
 
-            return entidad.Nombre;
+            return entidad;
         }
-        
+
+        public async Task<UsuarioModelBusiness> GetUsuarioByEmail(string email)
+        {
+            var entity = await _usuarioRepository.FindByEmailAsync(email);
+
+            return UsuarioMapper.Map(entity);
+        }
+
         public async Task<UsuarioModelBusiness> AddUsuario(UsuarioModelBusiness usuario)
         {
             var maxTrys = _appConfig.MaxTrys;

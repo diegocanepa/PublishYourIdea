@@ -21,6 +21,8 @@ namespace PublishYourIdea.Api.DataAccess.Contracts
         DbSet<Seguidores> Seguidores { get; set; }
         DbSet<Usuario> Usuario { get; set; }
         DbSet<RefreshToken> RefreshToken { get; set; }
+        DbSet<EmailConfirmationToken> EmailConfirmationToken { get; set; }
+        DbSet<EmailNotificacion> EmailNotificacion { get; set; }
 
         DbSet<TEntity> Set<TEntity>() where TEntity : class;
         DatabaseFacade Database { get; }

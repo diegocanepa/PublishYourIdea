@@ -8,9 +8,10 @@ namespace PublishYourIdea.Api.DataAccess.Contracts.Entities
         public Usuario()
         {
             Comentario = new HashSet<Comentario>();
+            EmailConfirmationToken = new HashSet<EmailConfirmationToken>();
+            EmailNotificacion = new HashSet<EmailNotificacion>();
             Idea = new HashSet<Idea>();
             Puntuacion = new HashSet<Puntuacion>();
-            RefreshToken = new HashSet<RefreshToken>();
             SeguidoresIdUsuarioSeguidoNavigation = new HashSet<Seguidores>();
             SeguidoresIdUsuarioSeguidorNavigation = new HashSet<Seguidores>();
         }
@@ -26,9 +27,10 @@ namespace PublishYourIdea.Api.DataAccess.Contracts.Entities
         public string Token { get; set; }
 
         public virtual ICollection<Comentario> Comentario { get; set; }
+        public virtual ICollection<EmailConfirmationToken> EmailConfirmationToken { get; set; }
+        public virtual ICollection<EmailNotificacion> EmailNotificacion { get; set; }
         public virtual ICollection<Idea> Idea { get; set; }
         public virtual ICollection<Puntuacion> Puntuacion { get; set; }
-        public virtual ICollection<RefreshToken> RefreshToken { get; set; }
         public virtual ICollection<Seguidores> SeguidoresIdUsuarioSeguidoNavigation { get; set; }
         public virtual ICollection<Seguidores> SeguidoresIdUsuarioSeguidorNavigation { get; set; }
     }

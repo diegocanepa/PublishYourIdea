@@ -39,8 +39,9 @@ namespace PublishYourIdea
             
             IoCRegister.AddRegistration(services);
             SwaggerConfig.AddRegistration(services);
+            EmailConfiguration.AddRegistration(services, Configuration);
 
-            services.AddMvc();
+            services.AddMvc(options => options.SuppressAsyncSuffixInActionNames = false);
             services.AddControllers();
         }
 

@@ -23,6 +23,7 @@ namespace PublishYourIdea.Api.Application.Services
         private readonly IUsuarioRepository _IUsuarioRepository;
         private readonly IConfiguration _Iconfiguration;
         private readonly IPasswordHasherService _passwordHasherService;
+        private readonly IEmailConfirmationTokenRepository _emailConfirmationToken;
 
         public string Secret => _Iconfiguration.GetSection("JwtSettings:Secret").Value;
         public TimeSpan TokenLifetime => TimeSpan.Parse(_Iconfiguration.GetSection("JwtSettings:TokenLifetime").Value);
@@ -31,11 +32,13 @@ namespace PublishYourIdea.Api.Application.Services
 
         public IdentityService(IUsuarioRepository IUsuarioRepository,
                                 IConfiguration Iconfiguration,
-                                IPasswordHasherService passwordHasherService)
+                                IPasswordHasherService passwordHasherService,
+                                IEmailConfirmationTokenRepository emailConfirmationToken)
         {
             _IUsuarioRepository = IUsuarioRepository;
             _Iconfiguration = Iconfiguration;
             _passwordHasherService = passwordHasherService;
+            _emailConfirmationToken = emailConfirmationToken;
             _tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
@@ -101,8 +104,12 @@ namespace PublishYourIdea.Api.Application.Services
                 };
             }
 
-            return await GenerateAuthAuthenticationTokenAsync(createdUser);
-        }
+            return new AuthenticationResultModelBusiness
+            {
+                Success = true,
+                message = "User created. Check your email and confirm your account, you must be confirmed before you can log in"
+            };
+        } 
 
         public async Task<AuthenticationResultModelBusiness> LoginAsync(string email, string password)
         {
@@ -116,15 +123,24 @@ namespace PublishYourIdea.Api.Application.Services
                 };
             }
 
+            if (user.Confirmacion is null)
+            {
+                return new AuthenticationResultModelBusiness
+                {
+                    Errors = new[] { "User account not confirimed. Please check your email, you must have a confirmd email to log on" }
+                };
+            }
+
             PasswordVerificationResult userHasValidPassword = _passwordHasherService.VerifyHashedPassword(user.Contraseña, password);
 
             if (userHasValidPassword == PasswordVerificationResult.Failed)
             {
                 return new AuthenticationResultModelBusiness
                 {
-                    Errors = new[] { "Combinacion User/password es incorrecta" }
+                    Errors = new[] { "Combination User/password is incorrect" }
                 };
             }
+
 
             return await GenerateAuthAuthenticationTokenAsync(user);
         }
@@ -179,6 +195,104 @@ namespace PublishYourIdea.Api.Application.Services
             storeRefreshToken = RefreshTokenMapper.Map(await _IUsuarioRepository.UpdateRefreshToken(RefreshTokenMapper.Map(storeRefreshToken)));
             var user = await _IUsuarioRepository.FindByEmailAsync(validatedToken.Claims.SingleOrDefault(x => x.Type == "Email").Value);
             return await GenerateAuthAuthenticationTokenAsync(user);
+        }
+
+        public async Task<string> GenerateEmailConfirmationTokenAsync(UsuarioModelBusiness user)
+        {
+            var cantEmailSended = _emailConfirmationToken.GetAllEmailUser(user.IdUsuario); 
+
+            if (cantEmailSended > 2)
+            {
+                return null;
+            }
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, user.IdUsuario.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), // para refresh token
+                    new Claim("Email", user.Email),
+                    new Claim("Id", user.IdUsuario.ToString())
+
+                }),
+                Expires = DateTime.UtcNow.AddMinutes(5),
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            var emailConfirmToken = new EmailConfirmationTokenModelBussines
+            {
+                JwtId = token.Id,
+                UserId = user.IdUsuario,
+                CreationDate = DateTime.UtcNow,
+                ExpiryDate = DateTime.UtcNow.AddMinutes(1),
+                Token = Guid.NewGuid().ToString()
+            };
+
+            await _emailConfirmationToken.Add(EmailConfirmationTokenMapper.Map(emailConfirmToken));
+
+            return emailConfirmToken.Token;
+        }
+
+        public async Task<AuthenticationResultModelBusiness> ConfirmEmail(string userId, string code) 
+        {
+            var usuario = await _IUsuarioRepository.Get(int.Parse(userId));
+            var emailCode = await _emailConfirmationToken.Get(code);
+
+            if (usuario is null)
+            {
+                return new AuthenticationResultModelBusiness
+                {
+                    Errors = new[] { "User not exist" }
+                };
+            }
+
+            if (emailCode is null)
+            {
+                return new AuthenticationResultModelBusiness
+                {
+                    Errors = new[] { "Email code not exist" }
+                };
+            }
+
+            if(usuario.IdUsuario == emailCode.UserId)
+            {
+                if (emailCode.ExpiryDate < DateTime.UtcNow)
+                {
+                    return new AuthenticationResultModelBusiness { Errors = new[] { "This Email Token is expired. Please try to send the email again" } };
+                }
+
+                if (emailCode.Invalidated != null)
+                {
+                    return new AuthenticationResultModelBusiness { Errors = new[] { "This Email Toekn is invalidate. Please try to send the email again" } };
+                }
+
+                if (emailCode.Used != null)
+                {
+                    return new AuthenticationResultModelBusiness { Errors = new[] { "This email Token has been used. Please try to send the email again" } };
+                }
+
+                usuario.Confirmacion = "S";
+                emailCode.Used = "S";
+                await _IUsuarioRepository.Update(usuario);
+                await _emailConfirmationToken.Update(emailCode);
+            }
+            else
+            {
+                return new AuthenticationResultModelBusiness
+                {
+                    Errors = new[] { "Code and User not match" }
+                };
+            }
+
+            return new AuthenticationResultModelBusiness { Success = true, message = "Email confirmed" };
+
         }
 
 
@@ -247,5 +361,7 @@ namespace PublishYourIdea.Api.Application.Services
                 RefreshToken = refreshToken.Token
             };
         }
+
+
     }
 }

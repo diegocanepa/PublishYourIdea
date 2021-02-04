@@ -1,20 +1,21 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Enum\" />
-    <Folder Include="Models\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="3.1.10" />
+    <PackageReference Include="NETCore.MailKit" Version="2.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PublishYourIdea.Api.Business\PublishYourIdea.Api.Business.csproj" />
+    <ProjectReference Include="..\PublishYourIdea.Api.DataAccess\PublishYourIdea.Api.DataAccess.Contracts\PublishYourIdea.Api.DataAccess.Contracts.csproj" />
   </ItemGroup>
 
 </Project>
