@@ -40,6 +40,7 @@ namespace PublishYourIdea
             IoCRegister.AddRegistration(services);
             SwaggerConfig.AddRegistration(services);
             EmailConfiguration.AddRegistration(services, Configuration);
+            JwtSettingsConfig.AddRegistration(services, Configuration);
 
             services.AddMvc(options => options.SuppressAsyncSuffixInActionNames = false);
             services.AddControllers();
@@ -60,6 +61,8 @@ namespace PublishYourIdea
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

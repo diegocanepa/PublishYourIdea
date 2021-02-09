@@ -15,12 +15,12 @@ namespace PublishYourIdea.Api.Config
         {
             var basepath = System.AppDomain.CurrentDomain.BaseDirectory; //Obtener donde esta alogado el proyecto
             var xmlPath = Path.Combine(basepath, "PublishYourIdea.Api.xml");
+            
 
             services.AddSwaggerGen(c =>
                 {
                     c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "PublishYourIdea API V1", Version = "v1" });
-                    c.IncludeXmlComments(xmlPath); //Acordarse de activar en el proyecto la generacion del archivo (proyecto->propiedades)
-
+                    //c.IncludeXmlComments(xmlPath); //Acordarse de activar en el proyecto la generacion del archivo (proyecto->propiedades)
                 }
             );
 
