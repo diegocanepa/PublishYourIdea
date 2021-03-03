@@ -34,7 +34,7 @@ namespace PublishYourIdea.Api.Application.Services
         {
             var entity = await _usuarioRepository.FindByEmailAsync(email);
 
-            return UsuarioMapper.Map(entity);
+            return UsuarioEntityMapper.Map(entity);
         }
 
         public async Task<UsuarioModelBusiness> AddUsuario(UsuarioModelBusiness usuario)
@@ -45,8 +45,8 @@ namespace PublishYourIdea.Api.Application.Services
             var retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(maxTrys, i=>timeToWait); //VER TODAS LAS CONFIGURACIONES DISPONIBLES
 
             return await retryPolicy.ExecuteAsync( async () => {
-                var addedEntity = await _usuarioRepository.Add(UsuarioMapper.Map(usuario));
-                return UsuarioMapper.Map(addedEntity);
+                var addedEntity = await _usuarioRepository.Add(UsuarioEntityMapper.Map(usuario));
+                return UsuarioEntityMapper.Map(addedEntity);
             }); 
         }
     }

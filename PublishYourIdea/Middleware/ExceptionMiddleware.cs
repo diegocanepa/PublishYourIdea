@@ -38,7 +38,7 @@ namespace PublishYourIdea.Api.Middleware
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-            return httpContext.Response.WriteAsync(new ErrorDetailsModels()
+            return httpContext.Response.WriteAsync(new RegisterResponseModels()
             {
                 StatusCode = httpContext.Response.StatusCode,
                 Message = "Internal Server Error"

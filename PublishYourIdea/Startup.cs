@@ -42,6 +42,7 @@ namespace PublishYourIdea
             EmailConfiguration.AddRegistration(services, Configuration);
             JwtSettingsConfig.AddRegistration(services, Configuration);
 
+            services.AddCors();
             services.AddMvc(options => options.SuppressAsyncSuffixInActionNames = false);
             services.AddControllers();
         }
@@ -65,6 +66,10 @@ namespace PublishYourIdea
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseCors(
+                options => options.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader()
+            );
 
             app.UseEndpoints(endpoints =>
             {

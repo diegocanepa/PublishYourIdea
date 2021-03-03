@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using PublishYourIdea.Api.DataAccess.Mappers;
+using PublishYourIdea.Api.Mappers;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -41,33 +42,21 @@ namespace PublishYourIdea.Api.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserRegistrationRequest request)
         {
-            if (!ModelState.IsValid)
+
+            var authResponse = await _IIdentityService.RegisterAsync(UserRegistrationRequestMapper.Map(request));
+
+            if (authResponse.Success)
             {
-                return BadRequest(new AuthFailedResponse
-                {
-                    Errors = ModelState.Values.SelectMany(x => x.Errors.Select(xx => xx.ErrorMessage))
-                });
+                var user = await _usuarioService.GetUsuarioByEmail(request.Email);
+                await SendEmailConfirmationTokenAsync(user);
             }
 
-            var authResponse = await _IIdentityService.RegisterAsync(request.Email, request.Password);
-
-
-            if (!authResponse.Success)
+            return Ok(new RegisterResponseModels
             {
-                return BadRequest(new AuthFailedResponse
-                {
-                    Errors = authResponse.Errors
-                });
-            }
-
-
-            var user = await _usuarioService.GetUsuarioByEmail(request.Email);
-            await SendEmailConfirmationTokenAsync(user);
-
-            return Ok(new SuccessDetailsModels
-            {
-                Status = 200,
-                Message = authResponse.message
+                Errors = authResponse.Errors,
+                Success = authResponse.Success,
+                Message = authResponse.message,
+                user = authResponse.user is null ? null : UsuarioBussinesMapper.Map(authResponse.user)
             });
         }
 
@@ -75,21 +64,15 @@ namespace PublishYourIdea.Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
         {
-
             var authResponse = await _IIdentityService.LoginAsync(request.Email, request.Password);
 
-            if (!authResponse.Success)
+            return Ok(new AuthResponseModel
             {
-                return BadRequest(new AuthFailedResponse
-                {
-                    Errors = authResponse.Errors
-                });
-            }
-
-            return Ok(new AuthSuccessResponse
-            {
+                success = authResponse.Success,
+                Errors = authResponse.Errors,
                 Token = authResponse.Token,
-                RefeshToken = authResponse.RefreshToken
+                RefreshToken = authResponse.RefreshToken,
+                user = authResponse.user is null ? null : UsuarioBussinesMapper.Map(authResponse.user),
             });
         }
 
@@ -100,19 +83,12 @@ namespace PublishYourIdea.Api.Controllers
 
             var authResponse = await _IIdentityService.RefreshTokenAsync(request.Token, request.RefeshToken);
 
-
-            if (!authResponse.Success)
+            return Ok(new AuthResponseModel
             {
-                return BadRequest(new AuthFailedResponse
-                {
-                    Errors = authResponse.Errors
-                });
-            }
-
-            return Ok(new AuthSuccessResponse
-            {
+                success = authResponse.Success,
+                Errors = authResponse.Errors,
                 Token = authResponse.Token,
-                RefeshToken = authResponse.RefreshToken
+                RefreshToken = authResponse.RefreshToken
             });
         }
 
@@ -134,7 +110,7 @@ namespace PublishYourIdea.Api.Controllers
             var basePathTemplate = String.Concat(Directory.GetParent(Directory.GetCurrentDirectory().ToString()), "/PublishYourIdea.Api.Application/PublishYourIdea.Api.Application/EmailTemplates/RegisterEmailModel.html");
             var content = _emailSenderService.GetHTML(basePathTemplate, data);
 
-            var message = new EmailMessage(new string[] { "diego.canepa241198@gmail.com" }, "Validacion Email", content);
+            var message = new EmailMessage(new string[] { user.Email }, "Validacion Email", content);
 
             await _emailSenderService.SendEmail(message);
 
@@ -148,17 +124,10 @@ namespace PublishYourIdea.Api.Controllers
         {
             var authResponse = await _IIdentityService.ConfirmEmail(userId, code);
 
-            if (!authResponse.Success)
+            return Ok(new RegisterResponseModels
             {
-                return BadRequest(new AuthFailedResponse
-                {
-                    Errors = authResponse.Errors
-                });
-            }
-
-            return Ok(new SuccessDetailsModels
-            {
-                Status = 200,
+                Success = authResponse.Success,
+                Errors = authResponse.Errors,
                 Message = authResponse.message
             });
         }
@@ -173,15 +142,17 @@ namespace PublishYourIdea.Api.Controllers
 
             if (!emailSend)
             {
-                return BadRequest(new AuthFailedResponse
+                return Ok(new EmailResponseModel
                 {
+                    Success = false,
                     Errors = new[] { "Ya se le enviarion varios mails con anterioridad" }
                 });
             }
 
-            return Ok(new SuccessDetailsModels
+            return Ok(new EmailResponseModel
             {
-                Status = 200,
+                StatusCode = 200,
+                Success = true,
                 Message = "Mail reenviado"
             });
         }

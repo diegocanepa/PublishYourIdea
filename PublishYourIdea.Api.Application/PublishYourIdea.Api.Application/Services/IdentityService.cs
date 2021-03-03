@@ -72,26 +72,26 @@ namespace PublishYourIdea.Api.Application.Services
             return tokenHandler.WriteToken(token);
         }
 
-        public async Task<AuthenticationResultModelBusiness> RegisterAsync(string email, string password)
+        public async Task<AuthenticationResultModelBusiness> RegisterAsync(UsuarioModelBusiness user)
         {
-            var existingUser = await _IUsuarioRepository.FindByEmailAsync(email);
+            var existingUser = await _IUsuarioRepository.FindByEmailAsync(user.Email);
 
             if (existingUser != null)
             {
                 return new AuthenticationResultModelBusiness
                 {
-                    Errors = new[] { "Usuario con email ya existente" }
+                    Success = false,
+                    Errors = new[] { "This user's email address already exists" }
                 };
             }
 
             var newUser = new Usuario
             {
-                Email = email,
-                Contraseña = _passwordHasherService.HashPassword(password),
-                Nombre = "diego",
-                Apellido = "canepa",
-                FechaCreacion = System.DateTime.Today,
-                Token = "asasfas"
+                Email = user.Email,
+                Contraseña = _passwordHasherService.HashPassword(user.Contraseña),
+                Nombre = user.Nombre,
+                Apellido = user.Apellido,
+                FechaCreacion = user.FechaCreacion,
             };
 
             var createdUser = await _IUsuarioRepository.Add(newUser);
@@ -100,14 +100,16 @@ namespace PublishYourIdea.Api.Application.Services
             {
                 return new AuthenticationResultModelBusiness
                 {
-                    Errors = new[] { "Usuario no creado" }
+                    Success = false,
+                    Errors = new[] { "Something went wrong - Couldn't create the user. Please try again later." }
                 };
             }
 
             return new AuthenticationResultModelBusiness
             {
                 Success = true,
-                message = "User created. Check your email and confirm your account, you must be confirmed before you can log in"
+                message = "User created. Check your email and confirm your account, you must be confirmed before you can log in",
+                user = UsuarioEntityMapper.Map(createdUser)
             };
         } 
 
@@ -231,7 +233,7 @@ namespace PublishYourIdea.Api.Application.Services
                 JwtId = token.Id,
                 UserId = user.IdUsuario,
                 CreationDate = DateTime.UtcNow,
-                ExpiryDate = DateTime.UtcNow.AddMinutes(1),
+                ExpiryDate = DateTime.UtcNow.AddMinutes(15),
                 Token = Guid.NewGuid().ToString()
             };
 
@@ -358,7 +360,8 @@ namespace PublishYourIdea.Api.Application.Services
             {
                 Success = true,
                 Token = tokenHandler.WriteToken(token),
-                RefreshToken = refreshToken.Token
+                RefreshToken = refreshToken.Token,
+                user = UsuarioEntityMapper.Map(createdUser)
             };
         }
 

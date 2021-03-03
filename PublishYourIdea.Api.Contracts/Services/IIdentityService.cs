@@ -8,7 +8,7 @@ namespace PublishYourIdea.Api.Application.Contracts.Services
 {
     public interface IIdentityService 
     {
-        Task<AuthenticationResultModelBusiness> RegisterAsync(string email, string password);
+        Task<AuthenticationResultModelBusiness> RegisterAsync(UsuarioModelBusiness user);
         Task<AuthenticationResultModelBusiness> LoginAsync(string email, string password);
         Task<AuthenticationResultModelBusiness> RefreshTokenAsync(string token, string refeshToken);
         Task<string> GenerateEmailConfirmationTokenAsync(UsuarioModelBusiness user);

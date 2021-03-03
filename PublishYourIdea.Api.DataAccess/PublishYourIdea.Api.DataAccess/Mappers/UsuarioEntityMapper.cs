@@ -6,7 +6,7 @@ using System.Text;
 
 namespace PublishYourIdea.Api.DataAccess.Mappers
 {
-    public static class UsuarioMapper
+    public static class UsuarioEntityMapper
     {
         public static Usuario Map(UsuarioModelBusiness dto)
         {
@@ -18,7 +18,6 @@ namespace PublishYourIdea.Api.DataAccess.Mappers
                 Email = dto.Email,
                 Contraseña = dto.Contraseña,
                 FechaCreacion = dto.FechaCreacion,
-                Token = dto.Token
             };
         }
 
@@ -32,7 +31,6 @@ namespace PublishYourIdea.Api.DataAccess.Mappers
                 Email = entity.Email,
                 Contraseña = entity.Contraseña,
                 FechaCreacion = entity.FechaCreacion,
-                Token = entity.Token
             };
         }
 

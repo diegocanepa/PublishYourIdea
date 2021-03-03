@@ -580,12 +580,6 @@ namespace PublishYourIdea.Api.DataAccess.Contracts
                     .HasColumnType("varchar(45)")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_unicode_ci");
-
-                entity.Property(e => e.Token)
-                    .HasColumnName("token")
-                    .HasColumnType("varchar(200)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_unicode_ci");
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -7,31 +7,25 @@ using System.Threading.Tasks;
 
 namespace PublishYourIdea.Api.Mappers
 {
-    public static class UsuarioPresentationMapper
+    public static class UsuarioBussinesMapper
     {
-        public static UsuarioModelBusiness Map(UsuarioModel dto)
+        public static UsuarioModel Map(UsuarioModelBusiness dto)
         {
-            return new UsuarioModelBusiness()
+            return new UsuarioModel()
             {
                 Nombre = dto.Nombre,
                 Apellido = dto.Apellido,
                 Email = dto.Email,
-                Contraseña = dto.Contraseña,
-                FechaCreacion = dto.FechaCreacion,
-                Token = dto.Token
             };
         }
 
-        public static UsuarioModel Map(UsuarioModelBusiness entity)
+        public static UsuarioModelBusiness Map(UsuarioModel entity)
         {
-            return new UsuarioModel()
+            return new UsuarioModelBusiness()
             {
                 Nombre = entity.Nombre,
                 Apellido = entity.Apellido,
                 Email = entity.Email,
-                Contraseña = entity.Contraseña,
-                FechaCreacion = entity.FechaCreacion,
-                Token = entity.Token
             };
         }
     }

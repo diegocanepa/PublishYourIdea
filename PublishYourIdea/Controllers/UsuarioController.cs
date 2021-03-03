@@ -34,12 +34,5 @@ namespace PublishYourIdea.Api.Controllers
             return Ok(name); 
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddUsuario([FromBody]UsuarioModel usuario)
-        {
-            var usuarioAgregado = await _usuarioService.AddUsuario(UsuarioPresentationMapper.Map(usuario));
-
-            return Ok(UsuarioPresentationMapper.Map(usuarioAgregado));
-        }
     }
 }

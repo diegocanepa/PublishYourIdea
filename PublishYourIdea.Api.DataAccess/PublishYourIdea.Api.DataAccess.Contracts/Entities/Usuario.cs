@@ -24,7 +24,6 @@ namespace PublishYourIdea.Api.DataAccess.Contracts.Entities
         public DateTime FechaCreacion { get; set; }
         public DateTime? FechaBaja { get; set; }
         public string Confirmacion { get; set; }
-        public string Token { get; set; }
 
         public virtual ICollection<Comentario> Comentario { get; set; }
         public virtual ICollection<EmailConfirmationToken> EmailConfirmationToken { get; set; }
