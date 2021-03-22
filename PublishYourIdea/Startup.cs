@@ -42,7 +42,16 @@ namespace PublishYourIdea
             EmailConfiguration.AddRegistration(services, Configuration);
             JwtSettingsConfig.AddRegistration(services, Configuration);
 
-            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+
+                        builder.WithOrigins("http://localhost:3000");
+                    });
+
+            });
             services.AddMvc(options => options.SuppressAsyncSuffixInActionNames = false);
             services.AddControllers();
         }

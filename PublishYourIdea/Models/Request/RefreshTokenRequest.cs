@@ -8,6 +8,6 @@ namespace PublishYourIdea.Api.Models.Request
     public class RefreshTokenRequest
     {
         public string Token { get; set; }
-        public string RefeshToken { get; set; }
+        public string RefreshToken { get; set; }
     }
 }

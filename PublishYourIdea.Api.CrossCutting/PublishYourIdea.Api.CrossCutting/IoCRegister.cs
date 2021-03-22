@@ -31,6 +31,7 @@ namespace PublishYourIdea.Api.CrossCutting
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<IPasswordHasherService,PasswordHasherService>();
             services.AddTransient<IEmailSenderService, EmailSenderService>();
+            services.AddTransient<IIdeaService, IdeaService>();
 
             return services;
         }
@@ -41,6 +42,7 @@ namespace PublishYourIdea.Api.CrossCutting
             services.AddTransient<IUsuarioRepository, UsuarioRepository>(); //IUsuarioRepository IMPLEMENTA UsuarioRepository 
             services.AddTransient<IEmailConfirmationTokenRepository, EmailConfirmationTokenRepository>();
             services.AddTransient<IEmailAuditRepository, EmailAuditRepository>();
+            services.AddTransient<IIdeaRepository, IdeaRepository>();
 
             return services;
         }

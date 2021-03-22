@@ -62,11 +62,13 @@ namespace PublishYourIdea.Api.DataAccess.Repositories
             return _publishYourIdeaDBContext.Usuario.Select(x => x);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<Usuario> DeleteAsync(int id)
         {
             var entity = await _publishYourIdeaDBContext.Usuario.SingleAsync(x => x.IdUsuario == id);
             _publishYourIdeaDBContext.Usuario.Remove(entity);
             await _publishYourIdeaDBContext.SaveChangesAsync();
+
+            return entity;
         }
 
         public async Task<RefreshToken> GetRefreshTokenAsync(string refreshToken)

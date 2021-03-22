@@ -81,7 +81,7 @@ namespace PublishYourIdea.Api.Controllers
         public async Task<IActionResult> refreshToken([FromBody] RefreshTokenRequest request)
         {
 
-            var authResponse = await _IIdentityService.RefreshTokenAsync(request.Token, request.RefeshToken);
+            var authResponse = await _IIdentityService.RefreshTokenAsync(request.Token, request.RefreshToken);
 
             return Ok(new AuthResponseModel
             {

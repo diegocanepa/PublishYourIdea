@@ -33,7 +33,7 @@ namespace PublishYourIdea.Api.DataAccess.Contracts
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseMySql("server=remotemysql.com;database=XBboynej9U;user=XBboynej9U;password=ZImQgvMqBZ;treattinyasboolean=true", x => x.ServerVersion("8.0.13-mysql"));
+                optionsBuilder.UseMySql("server=remotemysql.com;database=XBboynej9U;user=XBboynej9U;password=ZImQgvMqBZ;treattinyasboolean=true;default command timeout=120;sslmode=none", x => x.ServerVersion("8.0.13-mysql"));
             }
         }
 
@@ -241,13 +241,13 @@ namespace PublishYourIdea.Api.DataAccess.Contracts
                     .HasColumnType("int(11)");
 
                 entity.Property(e => e.ComentarioBaja)
-                    .IsRequired()
                     .HasColumnName("comentarioBaja")
                     .HasColumnType("longtext")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_unicode_ci");
 
                 entity.Property(e => e.Descripcion)
+                    .IsRequired()
                     .HasColumnName("descripcion")
                     .HasColumnType("longtext")
                     .HasCharSet("utf8")
@@ -259,11 +259,11 @@ namespace PublishYourIdea.Api.DataAccess.Contracts
 
                 entity.Property(e => e.FechaBaja)
                     .HasColumnName("fechaBaja")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.FechaPublicacion)
                     .HasColumnName("fechaPublicacion")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.IdEstado)
                     .HasColumnName("idEstado")
@@ -291,7 +291,6 @@ namespace PublishYourIdea.Api.DataAccess.Contracts
                 entity.HasOne(d => d.IdEstadoNavigation)
                     .WithMany(p => p.Idea)
                     .HasForeignKey(d => d.IdEstado)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ESTADOIDEA");
 
                 entity.HasOne(d => d.IdUsuarioNavigation)
@@ -323,11 +322,11 @@ namespace PublishYourIdea.Api.DataAccess.Contracts
 
                 entity.Property(e => e.FechaBaja)
                     .HasColumnName("fechaBaja")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.FechaPublicacion)
                     .HasColumnName("fechaPublicacion")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.IdComentario)
                     .HasColumnName("idComentario")
@@ -449,11 +448,11 @@ namespace PublishYourIdea.Api.DataAccess.Contracts
 
                 entity.Property(e => e.CreationDate)
                     .HasColumnName("creationDate")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.ExpiryDate)
                     .HasColumnName("expiryDate")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.Invalidated)
                     .HasColumnName("invalidated")
@@ -499,7 +498,7 @@ namespace PublishYourIdea.Api.DataAccess.Contracts
 
                 entity.Property(e => e.FechaSeguimiento)
                     .HasColumnName("fechaSeguimiento")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.FueAceptado)
                     .HasColumnName("fueAceptado")

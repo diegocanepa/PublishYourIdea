@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,12 +16,22 @@ namespace PublishYourIdea.Api.Config
         {
             var basepath = System.AppDomain.CurrentDomain.BaseDirectory; //Obtener donde esta alogado el proyecto
             var xmlPath = Path.Combine(basepath, "PublishYourIdea.Api.xml");
-            
 
             services.AddSwaggerGen(c =>
                 {
+
+                    
+
                     c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "PublishYourIdea API V1", Version = "v1" });
                     //c.IncludeXmlComments(xmlPath); //Acordarse de activar en el proyecto la generacion del archivo (proyecto->propiedades)
+                    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme 
+                    {
+                        Description = "Autentification Auth",
+                        Name = "Authoritation",
+                        In = ParameterLocation.Header,
+                        Type = SecuritySchemeType.ApiKey,
+                    });
+
                 }
             );
 

@@ -70,5 +70,10 @@ namespace PublishYourIdea.Api.DataAccess.Repositories
             await _publishYourIdeaDBContext.SaveChangesAsync();
             return updateEntity.Entity;
         }
+
+        Task<EmailConfirmationToken> IRepository<EmailConfirmationToken>.DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

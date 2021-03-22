@@ -10,7 +10,7 @@ namespace PublishYourIdea.Api.DataAccess.Contracts.Repositories
         Task<bool> Exist(int id);
         Task<IEnumerable<T>> GetAll();
         Task<T> Get(int id);
-        Task DeleteAsync(int id);
+        Task<T> DeleteAsync(int id);
         Task<T> Update(int id, T elemet);
         Task<T> Add(T element);
 

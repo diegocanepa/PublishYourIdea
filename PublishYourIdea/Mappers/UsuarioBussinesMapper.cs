@@ -13,6 +13,7 @@ namespace PublishYourIdea.Api.Mappers
         {
             return new UsuarioModel()
             {
+                id = dto.IdUsuario,
                 Nombre = dto.Nombre,
                 Apellido = dto.Apellido,
                 Email = dto.Email,
@@ -23,6 +24,7 @@ namespace PublishYourIdea.Api.Mappers
         {
             return new UsuarioModelBusiness()
             {
+                IdUsuario = entity.id,
                 Nombre = entity.Nombre,
                 Apellido = entity.Apellido,
                 Email = entity.Email,

@@ -336,7 +336,7 @@ namespace PublishYourIdea.Api.Application.Services
                     new Claim("Id", createdUser.IdUsuario.ToString())
 
                 }),
-                Expires = DateTime.UtcNow.AddSeconds(45),
+                Expires = DateTime.UtcNow.AddMinutes(90),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature)
@@ -349,7 +349,7 @@ namespace PublishYourIdea.Api.Application.Services
                 JwtId = token.Id,
                 UserId = createdUser.IdUsuario,
                 CreationDate = DateTime.UtcNow,
-                ExpiryDate = DateTime.UtcNow.AddMonths(6),
+                ExpiryDate = DateTime.UtcNow.AddMinutes(180),
                 Token = Guid.NewGuid().ToString()
             };
 

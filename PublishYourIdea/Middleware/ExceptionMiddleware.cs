@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using PublishYourIdea.Api.Application.Contracts.Services;
 using PublishYourIdea.Api.Models;
+using PublishYourIdea.Api.Models.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace PublishYourIdea.Api.Middleware
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-            return httpContext.Response.WriteAsync(new RegisterResponseModels()
+            return httpContext.Response.WriteAsync(new ExceptionResponseModel()
             {
                 StatusCode = httpContext.Response.StatusCode,
                 Message = "Internal Server Error"
